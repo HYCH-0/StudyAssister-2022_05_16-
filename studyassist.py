@@ -1,6 +1,6 @@
 import cv2
 import mediapipe as mp
-import time
+#import time
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
@@ -91,53 +91,7 @@ with mp_pose.Pose(
 
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-
-    """
-    if results.pose_landmarks is not None:
-      rps_result = []
-
-      for res in results.pose_landmarks.landmark:
-        
-
-        org = (int(image.shape[1]), int(image.shape[0]))
-        
-        cv2.putText(
-        image, text='Success', 
-        org=(org[0], org[1] + 20), 
-        fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
-        fontScale=2, color=(255, 255, 255), 
-        thickness=2
-        )
-        
-        rps_result.append({
-                    'x': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].x,
-                    'y': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].y
-                })
-
-        
     
-    """
-    
-    
-    font                   = cv2.FONT_HERSHEY_SIMPLEX
-    bottomLeftCornerOfText = (10,500)
-    fontScale              = 1
-    fontColor              = (255,255,255)
-    thickness              = 1
-    lineType               = 2
-
-    cv2.putText(image, 'Hello World!',
-      bottomLeftCornerOfText, 
-      font, 
-      fontScale,
-      fontColor,
-      thickness,
-      lineType)
-    
-
-    winner = 1
-    text = ' '
     
     try:
       mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
@@ -147,6 +101,21 @@ with mp_pose.Pose(
       print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
       print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
       print()
+
+      font                   = cv2.FONT_HERSHEY_SIMPLEX
+      bottomLeftCornerOfText = (10,500)
+      fontScale              = 5
+      fontColor              = (255,255,255)
+      thickness              = 10
+      lineType               = 10
+
+      cv2.putText(image, 'mouth detected',
+        bottomLeftCornerOfText, 
+        font, 
+        fontScale,
+        fontColor,
+        thickness,
+        lineType)
 
       
       #time.sleep(1)
@@ -167,7 +136,8 @@ with mp_pose.Pose(
           results.pose_landmarks,
           mp_pose.POSE_CONNECTIONS,
           landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-    cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
+    #cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
+    cv2.imshow("img",image)
     if cv2.waitKey(1) == ord('q'):
       break
 cap.release()
