@@ -1,9 +1,16 @@
 import cv2
 import mediapipe as mp
-#import time
+import time
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
+
+time0 = time.time()
+timeX = 0
+
+a = int(input("Time end?: "))
+#a = 5.000000000000000
+
 
 Poses = mp_pose.Pose(
     min_detection_confidence=1.0,
@@ -93,10 +100,17 @@ with mp_pose.Pose(
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
     
+
+    
     try:
+      
+
       mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
       mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
 
+      print("time is ", (time.time() - time0) )
+      print("timeX is ", (timeX) )
+      print()
       print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
       print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
       print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
@@ -108,6 +122,8 @@ with mp_pose.Pose(
       fontColor              = (255,255,255)
       thickness              = 10
       lineType               = 10
+      
+
 
       cv2.putText(image, 'mouth detected',
         bottomLeftCornerOfText, 
@@ -118,13 +134,22 @@ with mp_pose.Pose(
         lineType)
 
       
-      #time.sleep(1)
+      
     except AttributeError:
+      timeX = time.time()
+
+      print("time0 is ", (time.time() - time0) )
+      print("time is ", (timeX) )
+      print()
       print( "입 x:", "X" )
       print( "입 y:", "X" )
       print( "입 z:", "X" )
       print()
       
+      
+
+      if (time.time() - timeX) >= 3:
+        break 
       #time.sleep(1)
     
     
@@ -138,6 +163,13 @@ with mp_pose.Pose(
           landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     #cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
     cv2.imshow("img",image)
+    
     if cv2.waitKey(1) == ord('q'):
+      print("Process End")
       break
+
+    if (time.time() - time0) >= a:
+      print(a, "sec end")
+      break
+    
 cap.release()
