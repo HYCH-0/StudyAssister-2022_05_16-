@@ -98,12 +98,11 @@ with mp_pose.Pose(
       for res in results.pose_landmarks.landmark:
         
 
-        org = (int(res.landmark[0].x * image.shape[1]), int(res.landmark[0].y * image.shape[0]))
-
+        org = (int(image.shape[1]), int(image.shape[0]))
+        
         cv2.putText(
         image, text='Success', 
-        org=(rps_result[winner][org][0], 
-        rps_result[winner][org][1] + 70), 
+        org=(org[0], org[1] + 20), 
         fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
         fontScale=2, color=(255, 255, 255), 
         thickness=2
