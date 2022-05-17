@@ -92,6 +92,8 @@ with mp_pose.Pose(
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
+
+    """
     if results.pose_landmarks is not None:
       rps_result = []
 
@@ -109,28 +111,30 @@ with mp_pose.Pose(
         )
         
         rps_result.append({
-                    'rps': org,
-                    'org': org
+                    'x': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].x,
+                    'y': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].y
                 })
 
-        mp_drawing.draw_landmarks(
-          image,
-          results.pose_landmarks,
-          mp_pose.POSE_CONNECTIONS,
-          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-    
-
-    #for res in results.multi_hand_landmarks:
-    #  org = (int(res.landmark[0].x * image.shape[1]), int(res.landmark[0].y * image.shape[0]))
+        
     
     """
+    
+    
+    font                   = cv2.FONT_HERSHEY_SIMPLEX
+    bottomLeftCornerOfText = (10,500)
+    fontScale              = 1
+    fontColor              = (255,255,255)
+    thickness              = 1
+    lineType               = 2
 
-    rps_result.append({
-      'x': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].x,
-      'y': results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].y
-    })
-
-    """
+    cv2.putText(image, 'Hello World!',
+      bottomLeftCornerOfText, 
+      font, 
+      fontScale,
+      fontColor,
+      thickness,
+      lineType)
+    
 
     winner = 1
     text = ' '
@@ -145,8 +149,6 @@ with mp_pose.Pose(
       print()
 
       
-      
-      
       #time.sleep(1)
     except AttributeError:
       print( "입 x:", "X" )
@@ -155,19 +157,16 @@ with mp_pose.Pose(
       print()
       
       #time.sleep(1)
-
-    
-    
-    
-  
-
-    
-
     
     
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
     # Flip the image horizontally for a selfie-view display.
+    mp_drawing.draw_landmarks(
+          image,
+          results.pose_landmarks,
+          mp_pose.POSE_CONNECTIONS,
+          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
     if cv2.waitKey(1) == ord('q'):
       break
