@@ -97,7 +97,6 @@ with mp_pose.Pose(
 
       for res in results.pose_landmarks.landmark:
         
-        idx = int(results[0][0])
 
         org = (int(res.landmark[0].x * image.shape[1]), int(res.landmark[0].y * image.shape[0]))
 
