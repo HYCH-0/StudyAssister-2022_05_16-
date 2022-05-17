@@ -9,6 +9,9 @@ Poses = mp_pose.Pose(
     min_detection_confidence=1.0,
     min_tracking_confidence=0.5)
 
+
+knn = cv2.ml.KNearest_create()
+
 # For static images:
 IMAGE_FILES = []
 BG_COLOR = (192, 192, 192) # gray
@@ -64,6 +67,8 @@ with mp_pose.Pose(
       #min_detection_confidence: 탐지성공으로 간주되는 최소 신뢰값. [0.0 < x < 1.0]
     min_tracking_confidence=0.5) as pose:
       #min_tracking_confidence: 추적검출 정확도. [0.0 < x < INF]
+
+
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -86,9 +91,36 @@ with mp_pose.Pose(
 
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    if results.pose_landmarks is not None:
+      rps_result = []
+
+      for res in results.pose_landmarks.landmark:
+        
+        idx = int(results[0][0])
+
+        org = (int(res.landmark[0].x * image.shape[1]), int(res.landmark[0].y * image.shape[0]))
+
+        cv2.putText(
+        image, text='Success', 
+        org=(rps_result[winner][org][0], 
+        rps_result[winner][org][1] + 70), 
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
+        fontScale=2, color=(255, 255, 255), 
+        thickness=2
+        )
+        
+        rps_result.append({
+                    'rps': org,
+                    'org': org
+                })
+
+        mp_drawing.draw_landmarks(
+          image,
+          results.pose_landmarks,
+          mp_pose.POSE_CONNECTIONS,
+          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     
-    
-    rps_result = []
 
     #for res in results.multi_hand_landmarks:
     #  org = (int(res.landmark[0].x * image.shape[1]), int(res.landmark[0].y * image.shape[0]))
@@ -102,10 +134,6 @@ with mp_pose.Pose(
 
     """
 
-    #print("Visual code sucess")
-
-    
-
     winner = 1
     text = ' '
     
@@ -118,16 +146,9 @@ with mp_pose.Pose(
       print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
       print()
 
-      """
-      cv2.putText(
-        image, text='Success', 
-        #org=(rps_result[winner]['org'][0], 
-        #rps_result[winner]['org'][1] + 70), 
-        fontFace=cv2.FONT_HERSHEY_SIMPLEX, 
-        fontScale=2, color=(0, 255, 0), 
-        thickness=3
-        )
-      """
+      
+      
+      
       #time.sleep(1)
     except AttributeError:
       print( "입 x:", "X" )
@@ -147,11 +168,7 @@ with mp_pose.Pose(
     
     
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    mp_drawing.draw_landmarks(
-        image,
-        results.pose_landmarks,
-        mp_pose.POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+    
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
     if cv2.waitKey(1) == ord('q'):
