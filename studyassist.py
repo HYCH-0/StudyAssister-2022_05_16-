@@ -5,12 +5,19 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
-time0 = time.time()
-timeX = 0
+timeMain = time.time()
+time1 = 0
+time2 = 0
+Activity = 0
 
 a = int(input("Time end?: "))
 #a = 5.000000000000000
 b = 0
+
+if Activity == 1:
+    time1 = time.time()
+elif Activity == 2:
+    time2 = time.time()
 
 
 Poses = mp_pose.Pose(
@@ -100,17 +107,19 @@ with mp_pose.Pose(
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
+
     
 
     
     try:
-      
+      Activity = 1
 
       mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
       mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
-      
-      print("time0 is ", (time.time() - time0) )
-      print("timeX is ", (time.time() - timeX) )
+      print()
+      print("Activity On")
+      print("ActiveTime is ", (time.time() - time1) )
+      print("StopTime is ", (time.time() - time2) )
       print()
       print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
       print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
@@ -137,10 +146,12 @@ with mp_pose.Pose(
       
       
     except AttributeError:
-      timeX = time.time()
+      Activity = 2
 
-      print("time0 is ", (time.time() - time0) )
-      print("timeX is ", (time.time() - timeX) )
+      print()
+      print("Activity Offed")
+      print("ActiveTime is ", (time.time() - time1) )
+      print("StopTime is ", (time.time() - time2) )
       print()
       print( "입 x:", "X" )
       print( "입 y:", "X" )
@@ -149,7 +160,7 @@ with mp_pose.Pose(
       
       
 
-      if (time.time() - timeX) >= 3:
+      if int((time.time() - time2)) >= 3:
         break 
       #time.sleep(1)
     
@@ -170,10 +181,11 @@ with mp_pose.Pose(
       break
     
     if b >= 3:
-      print("경고 3회 누적으로 인한 종료, " + str(int((time.time() - time0))) + "시간동안 집중하며, " + str(a) + "회 자리비움.")
-    if (time.time() - time0) >= a:
-      print("정상적인 종료, 지정된 " + str(int((time.time() - time0))) + "시간동안 집중하며, " + str(int((time.time() - timeX))) + "초간 자리비움.")
-      #print(a, "sec end")
+      print("경고 3회 누적으로 인한 종료, " + str(int((time.time() - time1))) + "시간동안 집중하며, " + str(a) + "회 자리비움.")
       break
+    if (time.time() - time1) >= a:
+      #print("정상적인 종료, 지정된 " + str(int(((time.time() - time1))/60)) + "시간동안 집중하며, " + str(int((time.time() - time2))) + "초간 자리비움.")
+      #print(a, "sec end")
+      continue
     
 cap.release()
