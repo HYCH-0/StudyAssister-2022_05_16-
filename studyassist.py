@@ -10,6 +10,7 @@ timeX = 0
 
 a = int(input("Time end?: "))
 #a = 5.000000000000000
+b = 0
 
 
 Poses = mp_pose.Pose(
@@ -107,9 +108,9 @@ with mp_pose.Pose(
 
       mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
       mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
-
-      print("time is ", (time.time() - time0) )
-      print("timeX is ", (timeX) )
+      
+      print("time0 is ", (time.time() - time0) )
+      print("timeX is ", (time.time() - timeX) )
       print()
       print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
       print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
@@ -139,7 +140,7 @@ with mp_pose.Pose(
       timeX = time.time()
 
       print("time0 is ", (time.time() - time0) )
-      print("time is ", (timeX) )
+      print("timeX is ", (time.time() - timeX) )
       print()
       print( "입 x:", "X" )
       print( "입 y:", "X" )
@@ -167,9 +168,12 @@ with mp_pose.Pose(
     if cv2.waitKey(1) == ord('q'):
       print("Process End")
       break
-
+    
+    if b >= 3:
+      print("경고 3회 누적으로 인한 종료, " + str(int((time.time() - time0))) + "시간동안 집중하며, " + str(a) + "회 자리비움.")
     if (time.time() - time0) >= a:
-      print(a, "sec end")
+      print("정상적인 종료, 지정된 " + str(int((time.time() - time0))) + "시간동안 집중하며, " + str(int((time.time() - timeX))) + "초간 자리비움.")
+      #print(a, "sec end")
       break
     
 cap.release()
