@@ -1,4 +1,4 @@
-#Dict for StudyAssist
+# Dict for StudyAssist
 
 required mediapipe, timer, opencv-python.
 
