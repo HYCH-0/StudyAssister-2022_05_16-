@@ -9,6 +9,7 @@ timeMain = time.time()
 time1 = 0
 time2 = 0
 Activity = 0
+ActBool = 0
 
 #a = int(input("Time end?: "))
 a = 5.000000000000000
@@ -104,65 +105,102 @@ with mp_pose.Pose(
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
+    tActiviteTime = 0
+    tStopTime = 0
+
+    
+
+    if Activity == 0:
+      print("Activity Ready")
+      ActiviteTime = 0
+      StopTime = 0
+      time.sleep(1)
+
     if Activity == 1:
-      time1 = time.time()
-    elif Activity == 2:
+      
       time2 = time.time()
+
+    elif Activity == 2:
       
-    ActiviteTime = int((time.time() - time1) - timeMain)
-    StopTime = int((time.time() - time2) - timeMain)
+      time1 = time.time()
     
 
+    ActiviteTime = int((time.time() - time1))
+    StopTime = int((time.time() - time2))
     
-    try:
-      Activity = 1
 
-      mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
-      mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
-      print()
-      print("Activity On")
-      print("ActiveTime is ", ActiviteTime )
-      print("StopTime is ", StopTime )
-      print()
-      print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
-      print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
-      print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
-      print()
+    """
+    if ActiviteTime >= 1:
+      tActiviteTime = ActiviteTime
+    if StopTime >= 1:
+      tStopTime = StopTime
+    """
+    
+    try:  #감지되었을 경우 실행
 
-      font                   = cv2.FONT_HERSHEY_SIMPLEX
-      bottomLeftCornerOfText = (10,500)
-      fontScale              = 5
-      fontColor              = (255,255,255)
-      thickness              = 10
-      lineType               = 10
+      if Activity == 0:
+        Activity = 2
+      else:
+        Activity = 1
+        if (ActiviteTime or StopTime) < 1000000000:
+          
       
 
+          mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
+          mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
+          print()
+          print("Activity On")
+          print("ActiveTime is ", ActiviteTime )
+          print("tActiviteTime is ", tActiviteTime)
+          print("StopTime is ", StopTime )
+          print()
+          print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
+          print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
+          print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
+          print()
 
-      cv2.putText(image, 'mouth detected',
-        bottomLeftCornerOfText, 
-        font, 
-        fontScale,
-        fontColor,
-        thickness,
-        lineType)
+          font                   = cv2.FONT_HERSHEY_SIMPLEX
+          bottomLeftCornerOfText = (10,500)
+          fontScale              = 5
+          fontColor              = (255,255,255)
+          thickness              = 10
+          lineType               = 10
+          
+
+
+          cv2.putText(image, 'mouth detected',
+            bottomLeftCornerOfText, 
+            font, 
+            fontScale,
+            fontColor,
+            thickness,
+            lineType)
+
 
       
       
-    except AttributeError:
-      Activity = 2
+    except AttributeError: #감지되지 않았을 경우 실행
 
-      print()
-      print("Activity Offed")
-      print("ActiveTime is ", ActiviteTime )
-      print("StopTime is ", StopTime )
-      print()
-      print( "입 x:", "X" )
-      print( "입 y:", "X" )
-      print( "입 z:", "X" )
-      print()
+      if Activity == 0:
+        Activity = 1
+      else:
+        Activity = 2
+        if (ActiviteTime or StopTime) < 1000000000:
+          print()
+          print("Activity Offed")
+          print("ActiveTime is ", ActiviteTime )
+          print("tStopTime is ", tStopTime)
+          print("StopTime is ", StopTime )
+          print()
+          print( "입 x:", "X" )
+          print( "입 y:", "X" )
+          print( "입 z:", "X" )
+          print()
+          
+
       
       
-
+      
       
       #time.sleep(1)
     
