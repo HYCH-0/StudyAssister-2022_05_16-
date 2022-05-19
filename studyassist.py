@@ -14,10 +14,7 @@ Activity = 0
 a = 5.000000000000000
 b = 0
 
-if Activity == 1:
-    time1 = time.time()
-elif Activity == 2:
-    time2 = time.time()
+
 
 
 Poses = mp_pose.Pose(
@@ -107,6 +104,11 @@ with mp_pose.Pose(
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
+    if Activity == 1:
+      time1 = time.time()
+    elif Activity == 2:
+      time2 = time.time()
+      
     ActiviteTime = int((time.time() - time1) - timeMain)
     StopTime = int((time.time() - time2) - timeMain)
     
