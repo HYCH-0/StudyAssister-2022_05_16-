@@ -1,6 +1,8 @@
 import cv2
 import mediapipe as mp
 import time
+
+from pkg_resources import add_activation_listener
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
@@ -8,11 +10,17 @@ mp_pose = mp.solutions.pose
 timeMain = time.time()
 time1 = 0
 time2 = 0
+
 Activity = 0
 ActBool = 0
 
-a = int(input("Time end?: "))
-#a = 5.000000000000000
+tActiviteTime = 0
+tStopTime = 0
+
+StopCount = 0
+
+#a = int(input("Time end?: "))
+a = 60.000000000000000
 b = 0
 
 
@@ -105,8 +113,7 @@ with mp_pose.Pose(
 
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
-    tActiviteTime = 0
-    tStopTime = 0
+    
 
     
 
@@ -148,6 +155,11 @@ with mp_pose.Pose(
 
           mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
           mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
+
+          if ActiviteTime != 0:
+            tActiviteTime = ActiviteTime
+            Saved = 1
+
           print()
           print("Activity On")
           print("ActiveTime is ", ActiviteTime )
@@ -159,16 +171,19 @@ with mp_pose.Pose(
           print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
           print()
 
+          if ActiviteTime != 0:
+            tActiviteTime = ActiviteTime
+
           font                   = cv2.FONT_HERSHEY_SIMPLEX
           bottomLeftCornerOfText = (10,500)
-          fontScale              = 5
+          fontScale              = 2
           fontColor              = (255,255,255)
           thickness              = 10
           lineType               = 10
           
 
 
-          cv2.putText(image, 'mouth detected',
+          cv2.putText(image, str(ActiviteTime),
             bottomLeftCornerOfText, 
             font, 
             fontScale,
@@ -176,6 +191,7 @@ with mp_pose.Pose(
             thickness,
             lineType)
 
+          
 
       
       
@@ -186,17 +202,26 @@ with mp_pose.Pose(
       else:
         Activity = 2
         if (ActiviteTime or StopTime) < 1000000000:
+
+          if StopTime != 0:
+            tStopTime = StopTime
+            Saved = 1
+
           print()
           print("Activity Offed")
           print("ActiveTime is ", ActiviteTime )
-          print("tStopTime is ", tStopTime)
+          print("tStopTime is ", tStopTime )
           print("StopTime is ", StopTime )
           print()
           print( "입 x:", "X" )
           print( "입 y:", "X" )
           print( "입 z:", "X" )
           print()
+
           
+          
+          
+          # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
       
       
@@ -225,7 +250,7 @@ with mp_pose.Pose(
       break
     if (ActiviteTime or StopTime) < 1000000000:
       if int(ActiviteTime) >= int(a):
-        print("정상적인 종료, 지정된 " + str(ActiviteTime) + "초동안 집중하며, " + str(StopTime) + "초간 자리비움.")
+        print("정상적인 종료, 지정된 " + str(ActiviteTime) + "초동안 집중하며, " + str(StopCount) + "초간 자리비움.")
         #print(a, "sec end")
         break
         #continue
