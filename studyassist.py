@@ -19,6 +19,9 @@ tStopTime = 0
 
 StopCount = 0
 
+Saved = 0
+tSaved = 0
+
 #a = int(input("Time end?: "))
 a = 60.000000000000000
 b = 0
@@ -159,20 +162,26 @@ with mp_pose.Pose(
           if ActiviteTime != 0:
             tActiviteTime = ActiviteTime
             Saved = 1
+            tSaved = 1
+          else:
+            Saved = 0
+            if tSaved == 1:
+              ActiviteTime += tActiviteTime
+              tSaved = 0
+              
+            
 
           print()
           print("Activity On")
           print("ActiveTime is ", ActiviteTime )
           print("tActiviteTime is ", tActiviteTime)
           print("StopTime is ", StopTime )
+          print("Saved: ", Saved)
           print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
           print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
           print()
-
-          if ActiviteTime != 0:
-            tActiviteTime = ActiviteTime
 
           font                   = cv2.FONT_HERSHEY_SIMPLEX
           bottomLeftCornerOfText = (10,500)
@@ -206,12 +215,19 @@ with mp_pose.Pose(
           if StopTime != 0:
             tStopTime = StopTime
             Saved = 1
+          else:
+            Saved = 0
+            if tSaved == 1:
+              StopTime += tStopTime
+              tSaved = 0
+            
 
           print()
           print("Activity Offed")
           print("ActiveTime is ", ActiviteTime )
           print("tStopTime is ", tStopTime )
           print("StopTime is ", StopTime )
+          print("Saved: ", Saved)
           print()
           print( "입 x:", "X" )
           print( "입 y:", "X" )
