@@ -15,7 +15,9 @@ Activity = 0
 ActBool = 0
 
 tActiviteTime = 0
+ttActiviteTime = 0
 tStopTime = 0
+ttStopTime = 0
 
 StopCount = 0
 
@@ -166,7 +168,9 @@ with mp_pose.Pose(
           else:
             Saved = 0
             if tSaved == 1:
-              ActiviteTime += tActiviteTime
+              ttActiviteTime += tActiviteTime
+              tActiviteTime += ttActiviteTime
+              print("Saved!!")
               tSaved = 0
               
             
@@ -175,7 +179,10 @@ with mp_pose.Pose(
           print("Activity On")
           print("ActiveTime is ", ActiviteTime )
           print("tActiviteTime is ", tActiviteTime)
+          print("ttActiviteTime is ", ttActiviteTime)
+          print()
           print("StopTime is ", StopTime )
+          print("tStopTime is ", tStopTime )
           print("Saved: ", Saved)
           print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
@@ -215,18 +222,23 @@ with mp_pose.Pose(
           if StopTime != 0:
             tStopTime = StopTime
             Saved = 1
+            tSaved = 1
           else:
             Saved = 0
             if tSaved == 1:
               StopTime += tStopTime
+              print("Saved!!")
               tSaved = 0
             
 
           print()
           print("Activity Offed")
           print("ActiveTime is ", ActiviteTime )
-          print("tStopTime is ", tStopTime )
+          print("tActiviteTime is ", tActiviteTime)
+          print("ttActiviteTime is ", ttActiviteTime)
+          print()
           print("StopTime is ", StopTime )
+          print("tStopTime is ", tStopTime )
           print("Saved: ", Saved)
           print()
           print( "입 x:", "X" )
