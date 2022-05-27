@@ -169,21 +169,15 @@ with mp_pose.Pose(
             Saved = 0
             if tSaved == 1:
               ttActiviteTime += tActiviteTime
-              tActiviteTime += ttActiviteTime
-              print("Saved!!")
               tSaved = 0
               
             
 
           print()
           print("Activity On")
-          print("ActiveTime is ", ActiviteTime )
-          print("tActiviteTime is ", tActiviteTime)
-          print("ttActiviteTime is ", ttActiviteTime)
+          print("ActiveTime + C is ", ActiviteTime + ttActiviteTime )
           print()
-          print("StopTime is ", StopTime )
-          print("tStopTime is ", tStopTime )
-          print("Saved: ", Saved)
+          print("StopTime + C is ", StopTime + ttStopTime )
           print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
@@ -226,24 +220,20 @@ with mp_pose.Pose(
           else:
             Saved = 0
             if tSaved == 1:
-              StopTime += tStopTime
+              ttStopTime += tStopTime
               print("Saved!!")
               tSaved = 0
             
 
           print()
           print("Activity Offed")
-          print("ActiveTime is ", ActiviteTime )
-          print("tActiviteTime is ", tActiviteTime)
-          print("ttActiviteTime is ", ttActiviteTime)
+          print("ActiveTime + C is ", ActiviteTime + ttActiviteTime )
           print()
-          print("StopTime is ", StopTime )
-          print("tStopTime is ", tStopTime )
-          print("Saved: ", Saved)
+          print("StopTime + C is ", StopTime + ttStopTime )
           print()
-          print( "입 x:", "X" )
-          print( "입 y:", "X" )
-          print( "입 z:", "X" )
+          print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
+          print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
+          print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
           print()
 
           
