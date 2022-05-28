@@ -221,7 +221,7 @@ with mp_pose.Pose(
             Saved = 0
             if tSaved == 1:
               ttStopTime += tStopTime
-              print("Saved!!")
+              #print("Saved!!")
               tSaved = 0
             
 
