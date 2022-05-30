@@ -124,6 +124,7 @@ with mp_pose.Pose(
 
     if Activity == 0:
       print("Activity Ready")
+      print()
       print("자리비움 5초당 경고 1회로 계산됩니다.")
       ActiviteTime = 0
       StopTime = 0
@@ -174,7 +175,7 @@ with mp_pose.Pose(
               
             
 
-          print()
+          print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------집중모드--------")
           print("집중 시간:", ActiviteTime)
           print("누적 집중 시간:", ActiviteTime + ttActiviteTime )
@@ -225,7 +226,7 @@ with mp_pose.Pose(
               tSaved = 0
             
 
-          print()
+          print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------자리비움--------")
           print("자리비움 시간:", StopTime)
           print("누적 자리비움 시간:", StopTime + ttStopTime )
@@ -254,7 +255,7 @@ with mp_pose.Pose(
             thickness,
             lineType)
           
-          b = (StopTime + ttStopTime) // 5
+          b = (StopTime) // 5
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
       #time.sleep(1)
