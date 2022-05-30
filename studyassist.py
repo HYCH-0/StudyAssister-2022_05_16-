@@ -195,7 +195,7 @@ with mp_pose.Pose(
           
 
 
-          cv2.putText(image, "ActivateTime: "+ str(ActiviteTime),
+          cv2.putText(image, str("ActivateTime: " + str(ActiviteTime) + "  Accumulate Time: " + str(ActiviteTime + ttActiviteTime)),
             bottomLeftCornerOfText, 
             font, 
             fontScale,
@@ -247,7 +247,7 @@ with mp_pose.Pose(
           
 
 
-          cv2.putText(image, "StopTime: " + str(StopTime),
+          cv2.putText(image, str("StopTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
             bottomLeftCornerOfText, 
             font, 
             fontScale,
@@ -273,7 +273,7 @@ with mp_pose.Pose(
     cv2.imshow("img",image)
     
     if cv2.waitKey(1) == ord('q'):
-      print("Process End")
+      print("강제종료. ")
       break
     
 
