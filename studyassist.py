@@ -26,7 +26,7 @@ tSaved = 0
 
 #a = int(input("Time end?: "))
 a = 10.000000000000000
-b = 1
+b = 0
 
 
 
@@ -124,6 +124,7 @@ with mp_pose.Pose(
 
     if Activity == 0:
       print("Activity Ready")
+      print("자리비움 5초당 경고 1회로 계산됩니다.")
       ActiviteTime = 0
       StopTime = 0
       time.sleep(1)
@@ -167,15 +168,17 @@ with mp_pose.Pose(
             tSaved = 1
           else:
             Saved = 0
-            if tSaved == 1:
+            if tSaved == 1: #모드 변화시 이전 값 저장
               ttActiviteTime += tActiviteTime
               tSaved = 0
               
             
 
           print()
-          print("Activity On")
-          print("ActiveTime + C is ", ActiviteTime + ttActiviteTime )
+          print("--------집중모드--------")
+          print("집중 시간:", ActiviteTime)
+          print("누적 집중 시간:", ActiviteTime + ttActiviteTime )
+          print("경고 횟수:", b)
           print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
@@ -217,15 +220,16 @@ with mp_pose.Pose(
             tSaved = 1
           else:
             Saved = 0
-            if tSaved == 1:
+            if tSaved == 1: #모드 변화시 이전 값 저장
               ttStopTime += tStopTime
-              #print("Saved!!")
               tSaved = 0
             
 
           print()
-          print("Activity Offed")
-          print("StopTime + C is ", StopTime + ttStopTime )
+          print("--------자리비움--------")
+          print("자리비움 시간:", StopTime)
+          print("누적 자리비움 시간:", StopTime + ttStopTime )
+          print("경고 횟수:", b)
           print()
           print( "입 x:", "X" )
           print( "입 y:", "X" )
@@ -250,6 +254,7 @@ with mp_pose.Pose(
             thickness,
             lineType)
           
+          b = (StopTime + ttStopTime) // 5
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
       #time.sleep(1)
@@ -272,9 +277,9 @@ with mp_pose.Pose(
     
 
     if (ActiviteTime or StopTime) < 1000000000:
-      if StopTime + ttStopTime >= 5:
+      if b >= 3:
         #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        print("경고 누적으로 인한 종료.\n" + str(StopTime + ttStopTime) + "초간 자리비움.")
+        print("경고 3회 이상으로 인한 종료.\n" + str(StopTime + ttStopTime) + "초간 자리비움.")
         break
       if int(ActiviteTime + ttActiviteTime) >= int(a):
         #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
