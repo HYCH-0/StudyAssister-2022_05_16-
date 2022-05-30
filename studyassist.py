@@ -189,12 +189,15 @@ with mp_pose.Pose(
           font                   = cv2.FONT_HERSHEY_SIMPLEX
           bottomLeftCornerOfText = (10,500)
           fontScale              = 2
-          fontColor              = (255,255,255)
+          if ActiviteTime + ttActiviteTime >= 10:
+            fontColor              = (0,0,0)
+          else:
+            fontColor              = (255,255,255)
           thickness              = 10
           lineType               = 10
           
 
-
+          
           cv2.putText(image, str("ActivateTime: " + str(ActiviteTime) + "  Accumulate Time: " + str(ActiviteTime + ttActiviteTime)),
             bottomLeftCornerOfText, 
             font, 
@@ -241,7 +244,7 @@ with mp_pose.Pose(
           font                   = cv2.FONT_HERSHEY_SIMPLEX
           bottomLeftCornerOfText = (10,500)
           fontScale              = 2
-          fontColor              = (255,255,255)
+          fontColor              = (2**b,2**b,2**b)
           thickness              = 10
           lineType               = 10
           
@@ -255,7 +258,13 @@ with mp_pose.Pose(
             thickness,
             lineType)
           
-          b = (StopTime) // 5
+          if ((StopTime) // 5) == 1:
+            b = 1
+          elif ((StopTime) // 5) == 2:
+            b = 2
+          elif ((StopTime) // 5) == 3:
+            b = 3
+          
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
       #time.sleep(1)
@@ -286,5 +295,6 @@ with mp_pose.Pose(
         #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
         print("정상적인 종료.\n" + str(ActiviteTime + ttActiviteTime) + "초간 집중함.")
         break
+    
     
 cap.release()
