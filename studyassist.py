@@ -191,7 +191,7 @@ with mp_pose.Pose(
           
 
 
-          cv2.putText(image, str(ActiviteTime),
+          cv2.putText(image, "ActivateTime: "+ str(ActiviteTime),
             bottomLeftCornerOfText, 
             font, 
             fontScale,
@@ -232,16 +232,26 @@ with mp_pose.Pose(
           print( "입 z:", "X" )
           print()
 
-          if tStopTime >= 2:
-            b += 1
           
+          font                   = cv2.FONT_HERSHEY_SIMPLEX
+          bottomLeftCornerOfText = (10,500)
+          fontScale              = 2
+          fontColor              = (255,255,255)
+          thickness              = 10
+          lineType               = 10
+          
+
+
+          cv2.putText(image, "StopTime: " + str(StopTime),
+            bottomLeftCornerOfText, 
+            font, 
+            fontScale,
+            fontColor,
+            thickness,
+            lineType)
           
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
-      
-      
-      
-      
       #time.sleep(1)
     
     
@@ -260,14 +270,15 @@ with mp_pose.Pose(
       print("Process End")
       break
     
-    if b >= 3:
-      print("경고 3회 누적으로 인한 종료, " + str(int((time.time() - time1))) + "시간동안 집중하며, " + str(a) + "회 자리비움.")
-      break
+
     if (ActiviteTime or StopTime) < 1000000000:
-      if int(ActiviteTime + ttActiviteTime) >= int(a):
-        print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        #print(a, "sec end")
+      if StopTime + ttStopTime >= 5:
+        #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
+        print("경고 누적으로 인한 종료.\n" + str(StopTime + ttStopTime) + "초간 자리비움.")
         break
-        #continue
+      if int(ActiviteTime + ttActiviteTime) >= int(a):
+        #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
+        print("정상적인 종료.\n" + str(ActiviteTime + ttActiviteTime) + "초간 집중함.")
+        break
     
 cap.release()
