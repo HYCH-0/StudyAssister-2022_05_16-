@@ -25,8 +25,8 @@ Saved = 0
 tSaved = 0
 
 #a = int(input("Time end?: "))
-a = 60.000000000000000
-b = 0
+a = 10.000000000000000
+b = 1
 
 
 
@@ -177,8 +177,6 @@ with mp_pose.Pose(
           print("Activity On")
           print("ActiveTime + C is ", ActiviteTime + ttActiviteTime )
           print()
-          print("StopTime + C is ", StopTime + ttStopTime )
-          print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
           print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
@@ -227,16 +225,15 @@ with mp_pose.Pose(
 
           print()
           print("Activity Offed")
-          print("ActiveTime + C is ", ActiviteTime + ttActiviteTime )
-          print()
           print("StopTime + C is ", StopTime + ttStopTime )
           print()
-          print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
-          print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
-          print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
+          print( "입 x:", "X" )
+          print( "입 y:", "X" )
+          print( "입 z:", "X" )
           print()
 
-          
+          if tStopTime >= 2:
+            b += 1
           
           
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
@@ -267,8 +264,8 @@ with mp_pose.Pose(
       print("경고 3회 누적으로 인한 종료, " + str(int((time.time() - time1))) + "시간동안 집중하며, " + str(a) + "회 자리비움.")
       break
     if (ActiviteTime or StopTime) < 1000000000:
-      if int(ActiviteTime) >= int(a):
-        print("정상적인 종료, 지정된 " + str(ActiviteTime) + "초동안 집중하며, " + str(StopCount) + "초간 자리비움.")
+      if int(ActiviteTime + ttActiviteTime) >= int(a):
+        print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
         #print(a, "sec end")
         break
         #continue
