@@ -7,6 +7,11 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
+seatNum = 0
+name = ' '
+#targeTime = int(input("Time end?: ")) 테스트용도로 삽입
+targeTime = 10
+
 timeMain = time.time()
 time1 = 0
 time2 = 0
@@ -24,10 +29,9 @@ StopCount = 0
 Saved = 0
 tSaved = 0
 
-#a = int(input("Time end?: "))
-a = 10.000000000000000
-b = 0
-c = 0
+
+warnCount = 0
+warnCountTemp = 0
 
 
 
@@ -49,7 +53,7 @@ with mp_pose.Pose(
       #model_complexity: 모델의 복잡성, 숫자가 올라갈수록 지연시간 증가
     enable_segmentation=True,
       #enable_segmentation: 포즈 말고도 다른 분할 마스크 생성
-    min_detection_confidence=1.0) as pose:
+    min_detection_confidence=0.7) as pose:
       #min_detection_confidence: 탐지성공으로 간주되는 최소 신뢰값. [0.0 < x < 1.0]
   for idx, file in enumerate(IMAGE_FILES):
     image = cv2.imread(file)
@@ -114,15 +118,8 @@ with mp_pose.Pose(
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-
-
-
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
-    
-
-    
-
     if Activity == 0:
       print("Activity Ready")
       print()
@@ -180,7 +177,7 @@ with mp_pose.Pose(
           print("--------집중모드--------")
           print("집중 시간:", ActiviteTime)
           print("누적 집중 시간:", ActiviteTime + ttActiviteTime )
-          print("경고 횟수:", b)
+          print("경고 횟수:", warnCount)
           print()
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
@@ -207,9 +204,6 @@ with mp_pose.Pose(
             thickness,
             lineType)
 
-          
-
-      
       
     except AttributeError: #감지되지 않았을 경우 실행
 
@@ -234,7 +228,7 @@ with mp_pose.Pose(
           print("--------자리비움--------")
           print("자리비움 시간:", StopTime)
           print("누적 자리비움 시간:", StopTime + ttStopTime )
-          print("경고 횟수:", b)
+          print("경고 횟수:", warnCount)
           print()
           print( "입 x:", "X" )
           print( "입 y:", "X" )
@@ -245,7 +239,7 @@ with mp_pose.Pose(
           font                   = cv2.FONT_HERSHEY_SIMPLEX
           bottomLeftCornerOfText = (10,500)
           fontScale              = 2
-          fontColor              = (2**b,2**b,2**b)
+          fontColor              = (2**warnCount,2**warnCount,2**warnCount)
           thickness              = 10
           lineType               = 10
           
@@ -260,12 +254,12 @@ with mp_pose.Pose(
             lineType)
           
           
-          if ((StopTime) // 5) != c:
+          if ((StopTime) // 5) != warnCountTemp:
             if (StopTime) // 5 == 0:
-              c = 0
+              warnCountTemp = 0
             else:
-              b += 1
-              c = (StopTime) // 5
+              warnCount += 1
+              warnCountTemp = (StopTime) // 5
           
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
@@ -286,17 +280,17 @@ with mp_pose.Pose(
     if cv2.waitKey(1) == ord('q'):
       print("강제종료. ")
       break
-    
 
     if (ActiviteTime or StopTime) < 1000000000:
-      if b >= 3:
-        #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        print("경고 3회 이상으로 인한 종료.\n누적 " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        break
-      if int(ActiviteTime + ttActiviteTime) >= int(a):
-        #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        print("정상적인 종료.\n누적 " + str(ActiviteTime + ttActiviteTime) + "초간 집중함.")
-        break
-    
+      if warnCount >= 3 or int(ActiviteTime + ttActiviteTime) >= int(targeTime):
+        print()
+        if warnCount >= 3:
+          #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
+          print("경고 3회 이상으로 인한 종료.\n누적 " + str(StopTime + ttStopTime) + "초간, 한번에 " + str(StopTime) + "초동안 자리비움.")
+          break
+        if int(ActiviteTime + ttActiviteTime) >= int(targeTime):
+          #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
+          print("정상적인 종료.\n누적 " + str(ActiviteTime + ttActiviteTime) + "초간, 한번에 " + str(ActiviteTime) + "초동안 집중함.")
+          break
     
 cap.release()
