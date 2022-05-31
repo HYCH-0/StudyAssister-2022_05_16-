@@ -27,6 +27,7 @@ tSaved = 0
 #a = int(input("Time end?: "))
 a = 10.000000000000000
 b = 0
+c = 0
 
 
 
@@ -258,12 +259,13 @@ with mp_pose.Pose(
             thickness,
             lineType)
           
-          if ((StopTime) // 5) == 1:
-            b = 1
-          elif ((StopTime) // 5) == 2:
-            b = 2
-          elif ((StopTime) // 5) == 3:
-            b = 3
+          
+          if ((StopTime) // 5) != c:
+            if (StopTime) // 5 == 0:
+              c = 0
+            else:
+              b += 1
+              c = (StopTime) // 5
           
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
@@ -289,11 +291,11 @@ with mp_pose.Pose(
     if (ActiviteTime or StopTime) < 1000000000:
       if b >= 3:
         #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        print("경고 3회 이상으로 인한 종료.\n" + str(StopTime + ttStopTime) + "초간 자리비움.")
+        print("경고 3회 이상으로 인한 종료.\n누적 " + str(StopTime + ttStopTime) + "초간 자리비움.")
         break
       if int(ActiviteTime + ttActiviteTime) >= int(a):
         #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-        print("정상적인 종료.\n" + str(ActiviteTime + ttActiviteTime) + "초간 집중함.")
+        print("정상적인 종료.\n누적 " + str(ActiviteTime + ttActiviteTime) + "초간 집중함.")
         break
     
     
