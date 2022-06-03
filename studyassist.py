@@ -299,3 +299,5 @@ with mp_pose.Pose(
           break
     
 cap.release()
+
+#일시정지 기능 삽입 필요
