@@ -9,8 +9,8 @@ mp_pose = mp.solutions.pose
 
 seatNum = 0
 name = ' '
-#targeTime = int(input("Time end?: ")) 테스트용도로 삽입
-targeTime = 99
+targeTime = int(input("Time end?: ")) #테스트용도로 삽입
+
 
 timeMain = time.time()
 time1 = 0
@@ -32,8 +32,6 @@ tSaved = 0
 
 warnCount = 0
 warnCountTemp = 0
-
-
 
 
 Poses = mp_pose.Pose(
