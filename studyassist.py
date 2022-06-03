@@ -33,6 +33,8 @@ tSaved = 0
 warnCount = 0
 warnCountTemp = 0
 
+warningTime = 10
+
 
 Poses = mp_pose.Pose(
     min_detection_confidence=1.0,
@@ -257,12 +259,12 @@ with mp_pose.Pose(
             lineType)
           
           
-          if ((StopTime) // 5) != warnCountTemp:
-            if (StopTime) // 5 == 0:
+          if ((StopTime) // warningTime) != warnCountTemp:
+            if (StopTime) // warningTime == 0:
               warnCountTemp = 0
             else:
               warnCount += 1
-              warnCountTemp = (StopTime) // 5
+              warnCountTemp = (StopTime) // warningTime
           
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
