@@ -7,9 +7,17 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
+#이름 이용시간 좌석번호를 study_system(frst)에서 import
+
+#import study_system(frst)
+
+#이름
+name = ' ' 
+#이용시간
+        #targeTime = int(input("Time end?: "))
+targeTime = 99
+#좌석번호 
 seatNum = 0
-name = ' '
-targeTime = int(input("Time end?: ")) #테스트용도로 삽입
 
 
 timeMain = time.time()
