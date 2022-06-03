@@ -10,7 +10,7 @@ mp_pose = mp.solutions.pose
 seatNum = 0
 name = ' '
 #targeTime = int(input("Time end?: ")) 테스트용도로 삽입
-targeTime = 10
+targeTime = 99
 
 timeMain = time.time()
 time1 = 0
@@ -150,30 +150,30 @@ with mp_pose.Pose(
     
     try:  #감지되었을 경우 실행
 
-      if Activity == 0:
+      if Activity == 0: #처음 실행시 값 초기화 후 실행
         Activity = 2
-      else:
+      else: #값 초기화 후에 메인 코드 실행
         Activity = 1
-        if (ActiviteTime or StopTime) < 1000000000:
+        if (ActiviteTime or StopTime) < 1000000000: #일정 값 벗어날 경우 실행불가 
           
       
 
           mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
           mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
 
-          if ActiviteTime != 0:
+          if ActiviteTime != 0: #1초 이상의 값을 가질때 tA값에 저장, 저장되었다는 표시
             tActiviteTime = ActiviteTime
-            Saved = 1
+            #Saved = 1
             tSaved = 1
-          else:
-            Saved = 0
+          else: #0초일때 이전 값을 
+            #Saved = 0
             if tSaved == 1: #모드 변화시 이전 값 저장
               ttActiviteTime += tActiviteTime
               tSaved = 0
               
             
 
-          print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+          #print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------집중모드--------")
           print("집중 시간:", ActiviteTime)
           print("누적 집중 시간:", ActiviteTime + ttActiviteTime )
@@ -182,6 +182,8 @@ with mp_pose.Pose(
           print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
           print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
           print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
+          #print("Saved:", Saved)
+          print("tSaved:", tSaved)
           print()
 
           font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -207,24 +209,25 @@ with mp_pose.Pose(
       
     except AttributeError: #감지되지 않았을 경우 실행
 
-      if Activity == 0:
+      if Activity == 0: #처음 실행시 값 초기화 후 실행
         Activity = 1
-      else:
+      else: #값 초기화 후에 메인 코드 실행
         Activity = 2
-        if (ActiviteTime or StopTime) < 1000000000:
+        if (ActiviteTime or StopTime) < 1000000000: #일정 값 벗어날 경우 실행불가
 
-          if StopTime != 0:
+          if StopTime != 0: #1초 이상의 값을 가질때 tS를 1로저장, 저장되었다는 표시
             tStopTime = StopTime
-            Saved = 1
+            #Saved = 1
             tSaved = 1
-          else:
-            Saved = 0
+          
+          else: #0초일때 이전 값을 ttS에 저장하며, tS를 0으로 저장
+            #Saved = 0
             if tSaved == 1: #모드 변화시 이전 값 저장
               ttStopTime += tStopTime
               tSaved = 0
             
 
-          print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+          #print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------자리비움--------")
           print("자리비움 시간:", StopTime)
           print("누적 자리비움 시간:", StopTime + ttStopTime )
@@ -233,6 +236,8 @@ with mp_pose.Pose(
           print( "입 x:", "X" )
           print( "입 y:", "X" )
           print( "입 z:", "X" )
+          #print("Saved:", Saved)
+          print("tSaved:", tSaved)
           print()
 
           
@@ -283,7 +288,7 @@ with mp_pose.Pose(
 
     if (ActiviteTime or StopTime) < 1000000000:
       if warnCount >= 3 or int(ActiviteTime + ttActiviteTime) >= int(targeTime):
-        print()
+        print(str(seatNum) + "번자리 " + str(name) + " 사용자의 " + str(targeTime) + "초간 집중하는 ")
         if warnCount >= 3:
           #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
           print("경고 3회 이상으로 인한 종료.\n누적 " + str(StopTime + ttStopTime) + "초간, 한번에 " + str(StopTime) + "초동안 자리비움.")
