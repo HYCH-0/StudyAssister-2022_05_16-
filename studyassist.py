@@ -166,8 +166,8 @@ with mp_pose.Pose(
           
       
 
-          mouth_l = pose.process(image).pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_LEFT]
-          mouth_R = results.pose_landmarks.landmark[mp_pose.PoseLandmark.MOUTH_RIGHT]
+          shoulder_l = results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER]
+          shoulder_r = results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER]
 
           if ActiviteTime != 0: #1초 이상의 값을 가질때 tA값에 저장, 저장되었다는 표시
             tActiviteTime = ActiviteTime
@@ -187,9 +187,9 @@ with mp_pose.Pose(
           print("누적 집중 시간:", ActiviteTime + ttActiviteTime )
           print("경고 횟수:", warnCount)
           print()
-          print( "입 x:", (mouth_l.x + mouth_R.x)/2 )
-          print( "입 y:", (mouth_l.y + mouth_R.y)/2 )
-          print( "입 z:", (mouth_l.z + mouth_R.z)/2 )
+          print( "어깨 x:", (shoulder_l.x + shoulder_r.x)/2 )
+          print( "어깨 y:", (shoulder_l.y + shoulder_r.y)/2 )
+          print( "어깨 z:", (shoulder_l.z + shoulder_r.z)/2 )
           #print("Saved:", Saved)
           print("tSaved:", tSaved)
           print()
@@ -241,9 +241,9 @@ with mp_pose.Pose(
           print("누적 자리비움 시간:", StopTime + ttStopTime )
           print("경고 횟수:", warnCount)
           print()
-          print( "입 x:", "X" )
-          print( "입 y:", "X" )
-          print( "입 z:", "X" )
+          print( "어깨 x:", "X" )
+          print( "어깨 y:", "X" )
+          print( "어깨 z:", "X" )
           #print("Saved:", Saved)
           print("tSaved:", tSaved)
           print()
