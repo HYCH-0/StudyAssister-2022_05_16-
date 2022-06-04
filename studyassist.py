@@ -290,6 +290,9 @@ with mp_pose.Pose(
     #cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
     cv2.imshow("img",image)
     
+    if cv2.waitKey(1) == ord('p'):
+      input("일시정지됨: 계속하려면 터미널 상에서 아무키나 눌러주세요")
+
     if cv2.waitKey(1) == ord('q'):
       print("강제종료. ")
       break
