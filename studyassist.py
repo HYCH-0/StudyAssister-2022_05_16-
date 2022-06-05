@@ -7,18 +7,18 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
-from student_information import admin
-admin()
-
-#이름
-name = ' ' 
-#이용시간
-        #targeTime = int(input("Time end?: "))
-targeTime = 99
-#좌석번호 
 seatNum = 0
+name = 0
+targeTime = 0
 
+from student_information import admin, student_dict, seat_list, n1, n2, n3
 
+(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
+
+if (seatNum + targeTime) == 0:
+  seatNum = 1
+  name = 'Default'
+  targeTime = 10
 
 timeMain = time.time()
 time1 = 0
@@ -149,12 +149,7 @@ with mp_pose.Pose(
     StopTime = int((time.time() - time2))
     
 
-    """
-    if ActiviteTime >= 1:
-      tActiviteTime = ActiviteTime
-    if StopTime >= 1:
-      tStopTime = StopTime
-    """
+    
     
     try:  #감지되었을 경우 실행
 
@@ -191,7 +186,6 @@ with mp_pose.Pose(
           print( "어깨 y:", (shoulder_l.y + shoulder_r.y)/2 )
           print( "어깨 z:", (shoulder_l.z + shoulder_r.z)/2 )
           #print("Saved:", Saved)
-          print("tSaved:", tSaved)
           print()
 
           font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -243,7 +237,6 @@ with mp_pose.Pose(
           print( "어깨 y:", "X" )
           print( "어깨 z:", "X" )
           #print("Saved:", Saved)
-          print("tSaved:", tSaved)
           print()
 
           
@@ -283,27 +276,24 @@ with mp_pose.Pose(
           mp_pose.POSE_CONNECTIONS,
           landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     #cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
-    cv2.imshow("img",image)
+    cv2.imshow("studyassist",image)
     
     if cv2.waitKey(1) == ord('p'):
-      input("일시정지됨: 계속하려면 터미널 상에서 아무키나 눌러주세요")
+      input("일시정지됨: 계속하려면 터미널 상에서 Enter키를 눌러주세요")
 
     if cv2.waitKey(1) == ord('q'):
-      print("강제종료. ")
+      print("강제종료됨. ")
       break
 
     if (ActiviteTime or StopTime) < 1000000000:
       if warnCount >= 3 or int(ActiviteTime + ttActiviteTime) >= int(targeTime):
-        print(str(seatNum) + "번자리 " + str(name) + " 사용자의 " + str(targeTime) + "초간 집중하는 ")
         if warnCount >= 3:
           #print("일정시간 자리비움으로 인한 종료, " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-          print("경고 3회 이상으로 인한 종료.\n누적 " + str(StopTime + ttStopTime) + "초간, 한번에 " + str(StopTime) + "초동안 자리비움.")
+          print(str(seatNum) + "번자리의 " + str(name) + "님 경고 3회 이상으로 인해 종료되었습니다.\n누적 " + str(StopTime + ttStopTime) + "초간, 한번에 " + str(StopTime) + "초동안 자리비움.")
           break
         if int(ActiviteTime + ttActiviteTime) >= int(targeTime):
           #print("정상적인 종료, 지정된 " + str(ActiviteTime + ttActiviteTime) + "초동안 집중하며, " + str(StopTime + ttStopTime) + "초간 자리비움.")
-          print("정상적인 종료.\n누적 " + str(ActiviteTime + ttActiviteTime) + "초간, 한번에 " + str(ActiviteTime) + "초동안 집중함.")
+          print(str(seatNum) + "번자리의 " + str(name) + "님 시간이 만료되었습니다.\n누적 " + str(ActiviteTime + ttActiviteTime) + "초간, 한번에 " + str(ActiviteTime) + "초동안 집중함.")
           break
     
 cap.release()
-
-#일시정지 기능 삽입 필요
