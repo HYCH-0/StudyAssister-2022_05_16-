@@ -12,9 +12,9 @@ seatNum = 0
 name = 0
 targeTime = 0
 
-"""from student_information import admin, student_dict, seat_list, n1, n2, n3
+from student_information import admin, student_dict, seat_list, n1, n2, n3
 
-(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)"""
+(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
 
 if (seatNum + targeTime) == 0:
   seatNum = 1
