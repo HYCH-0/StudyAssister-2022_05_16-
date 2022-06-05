@@ -7,9 +7,8 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
-#이름 이용시간 좌석번호를 study_system(frst)에서 import
-
-#import study_system(frst)
+from student_information import admin
+admin()
 
 #이름
 name = ' ' 
@@ -18,6 +17,7 @@ name = ' '
 targeTime = 99
 #좌석번호 
 seatNum = 0
+
 
 
 timeMain = time.time()
@@ -204,8 +204,6 @@ with mp_pose.Pose(
           thickness              = 10
           lineType               = 10
           
-
-          
           cv2.putText(image, str("ActivateTime: " + str(ActiviteTime) + "  Accumulate Time: " + str(ActiviteTime + ttActiviteTime)),
             bottomLeftCornerOfText, 
             font, 
@@ -256,8 +254,6 @@ with mp_pose.Pose(
           thickness              = 10
           lineType               = 10
           
-
-
           cv2.putText(image, str("StopTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
             bottomLeftCornerOfText, 
             font, 
@@ -277,7 +273,6 @@ with mp_pose.Pose(
           # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
 
       #time.sleep(1)
-    
     
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     

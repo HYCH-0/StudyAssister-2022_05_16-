@@ -8,5 +8,7 @@ def admin():
     n3 = int(input('이용하실 시간을 입력하세요: '))
     student_dict[n2] = n3
     seat_list.remove(n1)
-while seat_list:
-    admin()
+#while seat_list:
+#    admin()
+
+#n3의 연동 필요
