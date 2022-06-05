@@ -1,3 +1,4 @@
+from distutils.log import warn
 import cv2
 import mediapipe as mp
 import time
@@ -11,9 +12,9 @@ seatNum = 0
 name = 0
 targeTime = 0
 
-from student_information import admin, student_dict, seat_list, n1, n2, n3
+"""from student_information import admin, student_dict, seat_list, n1, n2, n3
 
-(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
+(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)"""
 
 if (seatNum + targeTime) == 0:
   seatNum = 1
@@ -43,11 +44,9 @@ warnCountTemp = 0
 
 warningTime = 10
 
-
 Poses = mp_pose.Pose(
     min_detection_confidence=1.0,
     min_tracking_confidence=0.5)
-
 
 knn = cv2.ml.KNearest_create()
 
@@ -69,7 +68,6 @@ with mp_pose.Pose(
     # Convert the BGR image to RGB before processing.
     results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-    
     if not results.pose_landmarks:
       continue
     print(
@@ -100,13 +98,11 @@ with mp_pose.Pose(
 # For webcam input:
 cap = cv2.VideoCapture(0)
 
-
 with mp_pose.Pose(
     min_detection_confidence=0.5,
       #min_detection_confidence: 탐지성공으로 간주되는 최소 신뢰값. [0.0 < x < 1.0]
     min_tracking_confidence=0.5) as pose:
       #min_tracking_confidence: 추적검출 정확도. [0.0 < x < INF]
-
 
   while cap.isOpened():
     success, image = cap.read()
@@ -144,12 +140,8 @@ with mp_pose.Pose(
       
       time1 = time.time()
     
-
     ActiviteTime = int((time.time() - time1))
     StopTime = int((time.time() - time2))
-    
-
-    
     
     try:  #감지되었을 경우 실행
 
@@ -159,8 +151,6 @@ with mp_pose.Pose(
         Activity = 1
         if (ActiviteTime or StopTime) < 1000000000: #일정 값 벗어날 경우 실행불가 
           
-      
-
           shoulder_l = results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER]
           shoulder_r = results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER]
 
@@ -173,8 +163,6 @@ with mp_pose.Pose(
             if tSaved == 1: #모드 변화시 이전 값 저장
               ttActiviteTime += tActiviteTime
               tSaved = 0
-              
-            
 
           #print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------집중모드--------")
@@ -188,25 +176,42 @@ with mp_pose.Pose(
           #print("Saved:", Saved)
           print()
 
+          bottomLeftCornerOfText = (50,615) 
           font                   = cv2.FONT_HERSHEY_SIMPLEX
-          bottomLeftCornerOfText = (10,500)
-          fontScale              = 2
-          if ActiviteTime + ttActiviteTime >= 10:
-            fontColor              = (0,0,0)
+          fontScale              = 1
+          if warnCount == 1:
+            fontColor              = (220,20,60)
+          elif warnCount == 2:
+            fontColor              = (255,0,0)
           else:
             fontColor              = (255,255,255)
-          thickness              = 10
-          lineType               = 10
+          thickness              = 2
+          lineType               = 1
           
           cv2.putText(image, str("ActivateTime: " + str(ActiviteTime) + "  Accumulate Time: " + str(ActiviteTime + ttActiviteTime)),
             bottomLeftCornerOfText, 
+            font, 
+            fontScale,
+            (255,255,255),
+            thickness,
+            lineType)
+
+          cv2.putText(image, str("Warning Count: " + str(warnCount)),
+            (50,500), 
+            font, 
+            fontScale,
+            fontColor,
+            thickness,
+            lineType)
+          
+          cv2.putText(image, str("SeatNumber: " + str(seatNum) + " Name: " + str(name) + " TargetTime: " + str(targeTime)),
+            (50,385), 
             font, 
             fontScale,
             fontColor,
             thickness,
             lineType)
 
-      
     except AttributeError: #감지되지 않았을 경우 실행
 
       if Activity == 0: #처음 실행시 값 초기화 후 실행
@@ -226,7 +231,6 @@ with mp_pose.Pose(
               ttStopTime += tStopTime
               tSaved = 0
             
-
           #print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("--------자리비움--------")
           print("자리비움 시간:", StopTime)
@@ -239,16 +243,36 @@ with mp_pose.Pose(
           #print("Saved:", Saved)
           print()
 
-          
+          bottomLeftCornerOfText = (50,615)
           font                   = cv2.FONT_HERSHEY_SIMPLEX
-          bottomLeftCornerOfText = (10,500)
-          fontScale              = 2
-          fontColor              = (2**warnCount,2**warnCount,2**warnCount)
-          thickness              = 10
-          lineType               = 10
+          fontScale              = 1
+          if warnCount == 1:
+            fontColor              = (220,20,60)
+          elif warnCount == 2:
+            fontColor              = (255,0,0)
+          else:
+            fontColor              = (0,0,0)
+          thickness              = 2
+          lineType               = 1
           
-          cv2.putText(image, str("StopTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
+          cv2.putText(image, str("ActivateTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
             bottomLeftCornerOfText, 
+            font, 
+            fontScale,
+            (0,0,0),
+            thickness,
+            lineType)
+
+          cv2.putText(image, str("Warning Count: " + str(warnCount)),
+            (50,500), 
+            font, 
+            fontScale,
+            fontColor,
+            thickness,
+            lineType)
+          
+          cv2.putText(image, str("SeatNumber: " + str(seatNum) + " Name: " + str(name) + " TargetTime: " + str(targeTime)),
+            (50,385), 
             font, 
             fontScale,
             fontColor,
@@ -262,10 +286,6 @@ with mp_pose.Pose(
             else:
               warnCount += 1
               warnCountTemp = (StopTime) // warningTime
-          
-          # 1 -> 2 ->  3 -> 4 -> 5 -> 5 -> 1
-
-      #time.sleep(1)
     
     #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     
