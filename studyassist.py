@@ -44,6 +44,8 @@ warnCountTemp = 0
 
 warningTime = 10
 
+pause = 0
+
 Poses = mp_pose.Pose(
     min_detection_confidence=1.0,
     min_tracking_confidence=0.5)
@@ -142,6 +144,11 @@ with mp_pose.Pose(
     
     ActiviteTime = int((time.time() - time1))
     StopTime = int((time.time() - time2))
+
+    if pause == 1:
+      ActiviteTime = 0
+      StopTime = 0
+    
     
     try:  #감지되었을 경우 실행
 
@@ -299,7 +306,9 @@ with mp_pose.Pose(
     cv2.imshow("studyassist",image)
     
     if cv2.waitKey(1) == ord('p'):
+      pause = 1
       input("일시정지됨: 계속하려면 터미널 상에서 Enter키를 눌러주세요")
+      pause = 0
 
     if cv2.waitKey(1) == ord('q'):
       print("강제종료됨. ")
