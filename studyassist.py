@@ -14,12 +14,13 @@ targeTime = 0
 
 from student_information import admin, student_dict, seat_list, n1, n2, n3
 
-(seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
-
-if (seatNum + targeTime) == 0:
+try:
+  (seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
+except:
   seatNum = 1
   name = 'Default'
   targeTime = 10
+  print("유효하지 않은 변수 입력, 기본값으로 기입합니다.\n")
 
 timeMain = time.time()
 time1 = 0
@@ -262,7 +263,7 @@ with mp_pose.Pose(
           thickness              = 2
           lineType               = 1
           
-          cv2.putText(image, str("ActivateTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
+          cv2.putText(image, str("StopTime: " + str(StopTime) + "  Accumulate Time: " + str(StopTime + ttStopTime)),
             bottomLeftCornerOfText, 
             font, 
             fontScale,
@@ -307,7 +308,7 @@ with mp_pose.Pose(
     
     if cv2.waitKey(1) == ord('p'):
       pause = 1
-      input("일시정지됨: 계속하려면 터미널 상에서 Enter키를 눌러주세요")
+      input("GUI 일시정지됨: 계속하려면 터미널 상에서 Enter키를 눌러주세요")
       pause = 0
 
     if cv2.waitKey(1) == ord('q'):

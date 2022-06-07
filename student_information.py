@@ -10,4 +10,3 @@ def admin(student_dict, seat_list, n1, n2, n3):
     student_dict[n2] = n3
     seat_list.remove(n1)
     return n1, n2, n3
-    
