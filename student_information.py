@@ -18,5 +18,3 @@ def admin(student_dict, seat_list, n1, n2, n3):
     
     print(n1, n2, n3)
     return n1, n2, n3
-
-admin(student_dict, seat_list, n1, n2, n3)
