@@ -19,7 +19,7 @@ try:
 except:
   seatNum = 1
   name = 'Default'
-  targeTime = 10
+  targeTime = 999
   print("유효하지 않은 변수 입력, 기본값으로 기입합니다.\n")
 
 timeMain = time.time()
@@ -48,8 +48,8 @@ warningTime = 10
 pause = 0
 
 Poses = mp_pose.Pose(
-    min_detection_confidence=1.0,
-    min_tracking_confidence=0.5)
+    min_detection_confidence=0.7,
+    min_tracking_confidence=0.3)
 
 knn = cv2.ml.KNearest_create()
 
@@ -63,7 +63,7 @@ with mp_pose.Pose(
       #model_complexity: 모델의 복잡성, 숫자가 올라갈수록 지연시간 증가
     enable_segmentation=True,
       #enable_segmentation: 포즈 말고도 다른 분할 마스크 생성
-    min_detection_confidence=0.7) as pose:
+    min_detection_confidence=0.3) as pose:
       #min_detection_confidence: 탐지성공으로 간주되는 최소 신뢰값. [0.0 < x < 1.0]
   for idx, file in enumerate(IMAGE_FILES):
     image = cv2.imread(file)
@@ -137,18 +137,18 @@ with mp_pose.Pose(
 
     if Activity == 1:
       
-      time1 = time.time()
+      time2 = time.time()
 
     elif Activity == 2:
       
-      time2 = time.time()
+      time1 = time.time()
     
     ActiviteTime = int((time.time() - time1))
     StopTime = int((time.time() - time2))
 
-    if pause == 1:
+    """if pause == 1:
       ActiviteTime = 0
-      StopTime = 0
+      StopTime = 0"""
     
     
     try:  #감지되었을 경우 실행

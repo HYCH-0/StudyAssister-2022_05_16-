@@ -16,5 +16,4 @@ def admin(student_dict, seat_list, n1, n2, n3):
     n3 = int(input('이용하실 시간을 입력하세요: '))
     student_dict[n2] = n3
     
-    print(n1, n2, n3)
     return n1, n2, n3
