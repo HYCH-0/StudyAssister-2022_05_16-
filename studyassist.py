@@ -137,11 +137,11 @@ with mp_pose.Pose(
 
     if Activity == 1:
       
-      time2 = time.time()
+      time1 = time.time()
 
     elif Activity == 2:
       
-      time1 = time.time()
+      time2 = time.time()
     
     ActiviteTime = int((time.time() - time1))
     StopTime = int((time.time() - time2))
