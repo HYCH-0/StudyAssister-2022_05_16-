@@ -146,9 +146,9 @@ with mp_pose.Pose(
     ActiviteTime = int((time.time() - time1))
     StopTime = int((time.time() - time2))
 
-    """if pause == 1:
+    if pause == 1:
       ActiviteTime = 0
-      StopTime = 0"""
+      StopTime = 0
     
     
     try:  #감지되었을 경우 실행
