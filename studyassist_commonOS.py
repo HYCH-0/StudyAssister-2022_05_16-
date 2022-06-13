@@ -12,7 +12,7 @@ seatNum = 0
 name = 0
 targeTime = 0
 
-from student_information import admin, student_dict, seat_list, n1, n2, n3
+from data.student_information import admin, student_dict, seat_list, n1, n2, n3
 
 try:
   (seatNum, name, targeTime) = admin(student_dict, seat_list, n1, n2, n3)
