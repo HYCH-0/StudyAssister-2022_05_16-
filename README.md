@@ -7,6 +7,7 @@
 해당 모듈의 설치 후에 작동을 권합니다.
 
 pip3 install opencv-python
+
 pip3 install mediapipe
 
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -18,4 +19,5 @@ this project required opencv-python, mediapipe.
 please install module and reload it.
 
 pip3 install opencv-python
+
 pip3 install mediapipe
